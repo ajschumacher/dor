@@ -166,6 +166,14 @@ def commit(filename):
     quints = quints_from_quads(quads)
     iterables_to_csv(quints)
 
+def log(filename):
+    quints = booled_tuples_from_csv(filename)
+    current_commit = None
+    for quint in quints:
+        if quint[0] != current_commit:
+            current_commit = quint[0]
+            print(current_commit)
+
 def checkout(filename, commit_id=None, form='csv'):
     triples = triples_from_dor(filename)
     entities = entities_from_triples(triples)
@@ -185,6 +193,9 @@ p_commit = subparsers.add_parser('commit', help='make a diff into a commit')
 p_commit.add_argument('filename', help='filename of a diff to commit',
                       nargs='?', default=sys.stdin)
 
+p_log = subparsers.add_parser('log', help='show commits available')
+p_log.add_argument('filename', help='filename of dor repository')
+
 p_co = subparsers.add_parser('checkout', help='get a version of data')
 p_co.add_argument('filename', help='filename of dor repository')
 p_co.add_argument('commit', help='identifier for a version', nargs='?')
@@ -196,6 +207,8 @@ def main():
         diff(args.start, args.finish)
     if args.command == 'commit':
         commit(args.filename)
+    if args.command == 'log':
+        log(args.filename)
     if args.command == 'checkout':
         checkout(args.filename, args.commit, args.form)
 
