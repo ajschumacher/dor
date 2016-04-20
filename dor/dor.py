@@ -175,7 +175,7 @@ def log(filename):
             print(current_commit)
 
 def checkout(filename, commit_id=None, form='csv'):
-    triples = triples_from_dor(filename)
+    triples = triples_from_dor(filename, commit_id=commit_id)
     entities = entities_from_triples(triples)
     if 'json' in form:
         entities_to_ndjson(entities)
